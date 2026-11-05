@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- this page is already dark: browsers and phones must not re-darken it -->
+<meta name="color-scheme" content="dark only">
+<title>Thunderfun Arcade</title>
+<style>
+/* Layout: phone home screen. Header with the bolt, an update banner when a new app is out, a "continue" card for the
+   last game played, a small stats strip, then a grid of game tiles (3 across). Everything is drawn in CSS and inline SVG,
+   so it works offline and needs no fonts or images from the internet. */
+:root {
+  --bg: #120f1c; --bg-2: #1a1628; --surface: #221d33; --line: #342c4d;
+  --fg: #f2eefb; --muted: #a49bc0; --bolt: #ffd23f; --bolt-ink: #2a2100; --bad: #ff6f7d;
+  color-scheme: dark only;
+}
+* { box-sizing: border-box; }
+[hidden], .wrap > div:empty { display: none !important; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); }
+body {
+  font: 16px/1.4 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; min-height: 100vh;
+  padding: 0 16px 40px; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none;
+}
+button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--bolt); outline-offset: 3px; }
+.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+svg.i { width: 1em; height: 1em; display: block; }
+
+header { padding-top: 26px; display: flex; align-items: flex-end; gap: 12px; }
+header .t { flex: 1; min-width: 0; }
+.eyebrow { font: 700 11px ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.eyebrow .b { width: 13px; height: 13px; background: var(--bolt); clip-path: polygon(55% 0, 10% 58%, 45% 58%, 35% 100%, 90% 38%, 55% 38%, 70% 0); }
+h1 { margin: 6px 0 0; font: 900 clamp(32px, 10vw, 50px)/.95 system-ui, sans-serif; letter-spacing: -.01em; text-transform: uppercase; }
+h1 span { color: var(--bolt); }
+.rb { width: 44px; height: 44px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); font-size: 22px; color: var(--muted); }
+.rb:active { transform: scale(.94); }
+.rb.spin svg { animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.update { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; background: linear-gradient(90deg, #3a2f0a, #241d08); border: 1px solid #6b5a1c; text-align: left; }
+.update { width: 100%; }
+.update > span:first-child { color: var(--bolt); font-size: 24px; }
+.update b { color: var(--bolt); }
+.update .go { margin-left: auto; font-weight: 800; color: var(--bolt-ink); background: var(--bolt); border-radius: 10px; padding: 6px 12px; white-space: nowrap; }
+
+.cont { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 14px 12px 12px; border-radius: 20px; background: var(--bg-2); border: 1px solid var(--line); text-align: left; width: 100%; }
+.cont .ico { width: 64px; height: 64px; border-radius: 18px; font-size: 34px; }
+.cont .k { font: 700 10.5px ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--bolt); }
+.cont .n { font-weight: 800; font-size: 18px; line-height: 1.2; }
+.cont .d { font-size: 13.5px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cont .go { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--bolt); color: var(--bolt-ink); font-size: 26px; }
+.cont:active { transform: scale(.985); }
+
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.stat { background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px; padding: 9px 10px; min-width: 0; }
+.stat span { display: block; font: 700 10px ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.stat b { display: block; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+
+.sec { font: 700 11px ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 0 0 -6px; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 12px; }
+@media (min-width: 560px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.app { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; min-width: 0; animation: pop .35s cubic-bezier(.2,.9,.3,1.3) backwards; }
+@keyframes pop { from { transform: scale(.85); opacity: 0; } }
+.ico {
+  --h: 40; position: relative; width: 100%; max-width: 96px; aspect-ratio: 1; border-radius: 26%; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(120% 90% at 30% 15%, hsl(var(--h) 85% 68%), hsl(var(--h) 70% 46%) 55%, hsl(var(--h) 65% 26%));
+  color: hsl(var(--h) 60% 97%); font-size: clamp(38px, 12vw, 50px);
+  box-shadow: 0 10px 22px -10px hsl(var(--h) 80% 40% / .7), inset 0 1px 0 hsl(var(--h) 90% 85% / .6), inset 0 -3px 0 hsl(var(--h) 60% 18% / .35);
+}
+.ico::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, hsl(0 0% 100% / .07) 0 6px, transparent 6px 14px); }
+.ico::after { content: ''; position: absolute; left: -20%; top: -45%; width: 140%; height: 80%; border-radius: 50%; background: hsl(0 0% 100% / .14); }
+.ico svg, .ico .mono { position: relative; z-index: 1; filter: drop-shadow(0 2px 2px hsl(var(--h) 60% 15% / .45)); }
+.ico .mono { font: 900 .55em/1 system-ui, sans-serif; letter-spacing: .02em; }
+.app:active .ico { transform: scale(.94); }
+.app .label { font-weight: 700; font-size: 12.5px; line-height: 1.2; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.app .plays { font-size: 11px; color: var(--muted); margin-top: -5px; }
+.app .dot { position: absolute; top: -3px; right: calc(50% - min(48px, 50%) - 2px); width: 12px; height: 12px; border-radius: 50%; background: var(--bolt); border: 2px solid var(--bg); z-index: 2; }
+
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.note.warn { color: var(--bad); }
+.empty { grid-column: 1 / -1; border: 2px dashed var(--line); border-radius: 18px; padding: 28px 20px; text-align: center; color: var(--muted); }
+.empty b { display: block; color: var(--fg); font-size: 17px; margin-bottom: 4px; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--surface); border: 1px solid var(--line); padding: 10px 16px; border-radius: 12px; font-weight: 700; font-size: 14px; z-index: 30; max-width: calc(100% - 32px); text-align: center; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="t">
+      <div class="eyebrow"><i class="b"></i>Personal games hub</div>
+      <h1>Thunderfun <span>Arcade</span></h1>
+    </div>
+    <button class="rb" id="refresh" type="button" aria-label="Check for new games"></button>
+  </header>
+  <div id="update"></div>
+  <div id="cont"></div>
+  <div class="stats" id="stats" hidden></div>
+  <p class="sec" id="secLbl" hidden>All games</p>
+  <main class="grid" id="grid" aria-live="polite"></main>
+  <p class="note" id="note" hidden></p>
+</div>
+
+<script>
+'use strict';
+/* The Android app provides window.Android (see MainActivity.java). Opened in a plain browser for testing, a stand-in
+   reads games.json from the repo folder and opens links in a new tab. */
+const A = window.Android || {
+  cachedList: () => localStorage.getItem('tfa_list') || '',
+  refresh: () => fetch('../../../../games.json?t=' + Date.now()).then(r => r.text()).then(t => { localStorage.setItem('tfa_list', t); window.onList(t, true); }).catch(e => window.onListError(String(e))),
+  open: u => { window.open(u, '_blank'); return true; },
+  getStats: () => localStorage.getItem('tfa_stats') || '',
+  setStats: s => localStorage.setItem('tfa_stats', s),
+  appVersion: () => 1
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/* simple hand-drawn icons (24-unit grid); game lists can name one of these, otherwise the tile shows letters */
+const P = {
+  target: '<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="5.6" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/>',
+  sprout: '<path fill="currentColor" d="M11 21v-7.2C10.4 9.6 7.6 6.8 3 6.6c0 4.6 3 7.6 7.4 8l.6.1V21z"/><path fill="currentColor" d="M11 13.6c.2-4.8 3.4-8.2 9-8.4 0 5.2-3.6 8.6-9 8.4z"/><rect x="10.6" y="12" width="2.2" height="9.5" rx="1.1" fill="currentColor"/>',
+  flame: '<path fill="currentColor" d="M12 1.8c1.1 3.4 5.8 5.6 5.8 11a5.8 5.8 0 0 1-11.6 0c0-2.8 1.5-4.6 2.8-5.9.2 2 1.1 3.2 2.2 3.6C10.6 7.6 10.6 4.6 12 1.8z"/><path fill="hsl(0 0% 100% / .55)" d="M12 11.5c.8 1.6 2.6 2.6 2.6 4.6a2.6 2.6 0 0 1-5.2 0c0-1.4.8-2.4 1.6-3 .1.7.4 1.2.8 1.4.1-1.1-.2-2 .2-3z"/>',
+  castle: '<path fill="currentColor" d="M2.5 21.5V8.5h3v2h2v-2h3v2h3v-2h3v2h2v-2h3v13h-7v-4.2a2 2 0 0 0-4 0v4.2z"/><path fill="currentColor" d="M10 8.5V4l2-1.5L14 4v4.5z"/>',
+  bolt: '<path fill="currentColor" d="M13.2 1.5 4 13.5h6.3L8.6 22.5 20 9.5h-6.6l2-8z"/>',
+  sword: '<path fill="currentColor" d="M19.8 2.2 21.8 4.2 10.9 15.1 8.9 13.1z"/><path fill="currentColor" d="M5.4 12.6 11.4 18.6 9.9 20.1 3.9 14.1z"/><path fill="currentColor" d="M6.4 16.6 7.4 17.6 4 21 3 20z"/>',
+  star: '<path fill="currentColor" d="m12 2 2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9l-6.1 3.5 1.5-6.8L2.2 9l6.9-.7z"/>',
+  gamepad: '<path fill="currentColor" d="M7 7h10a5 5 0 0 1 4.9 6l-.8 4a2.6 2.6 0 0 1-4.4 1.3L14.5 16h-5l-2.2 2.3A2.6 2.6 0 0 1 2.9 17l-.8-4A5 5 0 0 1 7 7z"/><path fill="hsl(0 0% 0% / .35)" d="M7 10h1.6v1.6h1.6v1.6H8.6v1.6H7v-1.6H5.4v-1.6H7zM16.2 10.4a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM18.4 12.6a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/>',
+  play: '<path fill="currentColor" d="M8 5.5v13l10.5-6.5z"/>',
+  refresh: '<path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path fill="currentColor" d="M20.5 3.5v6h-6z"/>'
+};
+// names used by the web arcade's icon picker map onto the closest drawing here
+const ALIAS = { local_fire_department: 'flame', fire: 'flame', psychiatry: 'sprout', eco: 'sprout', spa: 'sprout', forest: 'sprout', swords: 'sword', shield: 'castle', auto_awesome: 'star', sports_esports: 'gamepad', joystick: 'gamepad' };
+const svg = (k, cls) => `<svg class="i ${cls || ''}" viewBox="0 0 24 24" aria-hidden="true">${P[k]}</svg>`;
+function monogram(name) { const w = String(name).trim().split(/\s+/).filter(x => !/^(of|the|a|an)$/i.test(x)); return ((w[0] || '?')[0] + (w[1] ? w[1][0] : '')).toUpperCase(); }
+function iconHtml(g) {
+  const k = ALIAS[g.icon] || g.icon, h = Number(g.hue);
+  const face = P[k] && k !== 'play' && k !== 'refresh' ? svg(k) : `<span class="mono" aria-hidden="true">${esc(g.glyph || monogram(g.name))}</span>`;
+  return `<span class="ico" style="--h:${isFinite(h) ? h : 40}">${face}</span>`;
+}
+
+let games = [], latestApp = 0, stats = { plays: {}, last: {} }, loading = false;
+try { const s = JSON.parse(A.getStats() || '{}'); stats = { plays: s.plays || {}, last: s.last || {} }; } catch (e) { }
+
+function ago(t) {
+  const s = (Date.now() - t) / 1000;
+  if (s < 90) return 'just now'; if (s < 3600) return Math.round(s / 60) + ' min ago';
+  if (s < 86400) return Math.round(s / 3600) + ' hr ago'; const d = Math.round(s / 86400); return d === 1 ? 'yesterday' : d + ' days ago';
+}
+// only well-formed claude.ai games are shown; the app re-checks every link before opening it
+function parseList(text) {
+  const o = JSON.parse(text);
+  const list = (Array.isArray(o) ? o : o.games || []).filter(g => g && g.name && /^https:\/\/claude\.ai\//.test(String(g.url || '')));
+  return { games: list.map((g, i) => ({ ...g, id: String(g.id || g.url || i) })), app: Number(o.appVersion) || 0 };
+}
+
+function render() {
+  const grid = $('#grid');
+  // update banner
+  $('#update').innerHTML = latestApp > A.appVersion()
+    ? `<button class="update" type="button" data-update><span>${svg('bolt')}</span><span><b>New app version</b><br><span class="note">Version ${latestApp} is ready to install.</span></span><span class="go">Get it</span></button>` : '';
+  // continue card
+  let recent = null; for (const g of games) if (stats.last[g.id] && (!recent || stats.last[g.id] > stats.last[recent.id])) recent = g;
+  $('#cont').innerHTML = recent ? `<button class="cont" type="button" data-id="${esc(recent.id)}" aria-label="Continue ${esc(recent.name)}">${iconHtml(recent)}
+    <span><span class="k">Continue · ${ago(stats.last[recent.id])}</span><br><span class="n">${esc(recent.name)}</span>${recent.blurb ? `<br><span class="d">${esc(recent.blurb)}</span>` : ''}</span>
+    <span class="go">${svg('play')}</span></button>` : '';
+  // stats strip
+  let total = 0, top = null; for (const g of games) { const n = stats.plays[g.id] || 0; total += n; if (n && (!top || n > (stats.plays[top.id] || 0))) top = g; }
+  $('#stats').hidden = !total;
+  $('#stats').innerHTML = `<div class="stat"><span>Games</span><b>${games.length}</b></div><div class="stat"><span>Launches</span><b>${total}</b></div><div class="stat"><span>Most played</span><b>${top ? esc(top.name) : '—'}</b></div>`;
+  // tiles
+  $('#secLbl').hidden = !games.length;
+  grid.innerHTML = games.map((g, i) => {
+    const n = stats.plays[g.id] || 0, dot = recent && recent.id === g.id ? '<i class="dot" aria-hidden="true"></i>' : '';
+    return `<button class="app" type="button" style="animation-delay:${i * 35}ms" data-id="${esc(g.id)}" title="${esc(g.blurb || g.name)}">${dot}${iconHtml(g)}<span class="label">${esc(g.name)}</span>${n ? `<span class="plays">${n} play${n === 1 ? '' : 's'}</span>` : ''}</button>`;
+  }).join('') || (loading ? '<div class="empty"><b>Loading your arcade</b>Fetching the game list…</div>' : '<div class="empty"><b>No games yet</b>New games show up here as soon as they are added to the list.</div>');
+}
+
+function note(msg, warn) { const n = $('#note'); n.hidden = !msg; n.textContent = msg || ''; n.classList.toggle('warn', !!warn); }
+function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2400); }
+function setLoading(v) { loading = v; $('#refresh').classList.toggle('spin', v); }
+
+// called by the app with the list text (fresh = just downloaded, otherwise the saved copy)
+window.onList = (text, fresh) => {
+  setLoading(false);
+  try {
+    const before = games.length, r = parseList(text); games = r.games; latestApp = r.app;
+    if (fresh) { note(''); if (before && games.length > before) toast(games.length - before === 1 ? 'A new game has arrived!' : (games.length - before) + ' new games have arrived!'); }
+  } catch (e) { if (fresh) note('The game list could not be read. Try again in a minute.', true); }
+  render();
+};
+window.onListError = msg => {
+  setLoading(false);
+  note(games.length ? 'Offline: showing your saved game list.' : 'Could not reach the game list. Check your connection and tap refresh.', !games.length);
+  render();
+};
+function refresh() { if (loading) return; setLoading(true); render(); A.refresh(); }
+window.onResumeApp = () => refresh();
+
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-update]')) { A.open('https://github.com/antthunderfun/thunderfun-arcade/releases/latest'); return; }
+  const b = e.target.closest('[data-id]'); if (!b) return;
+  const g = games.find(x => x.id === b.dataset.id); if (!g) return;
+  if (!A.open(g.url)) { toast('That link is not a Claude game, so it was blocked.'); return; }
+  stats.plays[g.id] = (stats.plays[g.id] || 0) + 1; stats.last[g.id] = Date.now();
+  try { A.setStats(JSON.stringify(stats)); } catch (e2) { }
+  setTimeout(render, 400);
+});
+$('#refresh').innerHTML = svg('refresh');
+$('#refresh').addEventListener('click', refresh);
+
+// show the saved list straight away, then check for new games
+const cached = A.cachedList(); if (cached) window.onList(cached, false); else render();
+refresh();
+</script>
+</body>
+</html>

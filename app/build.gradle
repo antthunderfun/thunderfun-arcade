@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.application'
+}
+
+// The signing key (release.p12) is locked with a long password that only exists as a hidden GitHub secret.
+def keystorePassword = System.getenv('KEYSTORE_PASSWORD')
+
+android {
+    namespace 'com.thunderfun.arcade'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.thunderfun.arcade'
+        minSdk 26
+        targetSdk 34
+        // Bump both of these (and "appVersion" in games.json) when the app itself changes.
+        versionCode 1
+        versionName '1.0'
+    }
+
+    signingConfigs {
+        release {
+            if (keystorePassword) {
+                storeFile file('release.p12')
+                storeType 'pkcs12'
+                storePassword keystorePassword
+                keyAlias 'thunderfun'
+                keyPassword keystorePassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig keystorePassword ? signingConfigs.release : null
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}

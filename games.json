@@ -1,0 +1,37 @@
+{
+  "appVersion": 1,
+  "games": [
+    {
+      "id": "arrows-of-caelvanor",
+      "name": "Arrows of Caelvanor",
+      "url": "https://claude.ai/code/artifact/ebadbfe9-6442-44d9-8341-268d17acd520",
+      "blurb": "Hold the watchtower against the Ashen Horde and raise it into the White City.",
+      "icon": "target",
+      "hue": 28
+    },
+    {
+      "id": "undergrowth",
+      "name": "Undergrowth",
+      "url": "https://claude.ai/code/artifact/cc4a0172-b4a5-449f-9ed7-00c9612dff79",
+      "blurb": "Tap the mushrooms, release the spores and grow the forest floor.",
+      "icon": "sprout",
+      "hue": 145
+    },
+    {
+      "id": "ember-drift",
+      "name": "Ember Drift",
+      "url": "https://claude.ai/artifact/Mtj3iyZHXqpntmo7vCDW4v",
+      "blurb": "Drift through the night wood as a lantern spirit, burn the horde and bank embers for permanent upgrades.",
+      "icon": "flame",
+      "hue": 15
+    },
+    {
+      "id": "beacons-of-caelvanor",
+      "name": "Beacons of Caelvanor",
+      "url": "https://claude.ai/artifact/9mU6fN1EbzcEzFrT3Cu3Vs",
+      "blurb": "Ride east with Captain Ithren, raise towers and light the nine beacons. The prequel to Arrows of Caelvanor.",
+      "icon": "castle",
+      "hue": 48
+    }
+  ]
+}

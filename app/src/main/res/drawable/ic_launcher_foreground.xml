@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- soft glow behind the bolt -->
+    <path android:fillColor="#33FFD23F" android:pathData="M54,22a32,32 0,1 1,0 64a32,32 0,1 1,0 -64z" />
+    <!-- shadow -->
+    <path android:fillColor="#662A2100" android:pathData="M58.2,30.5L35.7,59.5L53.2,59.5L48.2,80.5L75.7,49.5L58.2,49.5L65.7,30.5Z" />
+    <!-- the bolt -->
+    <path android:fillColor="#FFFFD23F" android:pathData="M56.5,29L34,58L51.5,58L46.5,79L74,48L56.5,48L64,29Z" />
+</vector>
