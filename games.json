@@ -32,6 +32,14 @@
       "blurb": "Ride east with Captain Ithren, raise towers and light the nine beacons. The prequel to Arrows of Caelvanor.",
       "icon": "castle",
       "hue": 48
+    },
+    {
+      "id": "thunder-keep",
+      "name": "Thunder Keep",
+      "url": "https://claude.ai/artifact/X3EZGjYRz6mNpBa1mDzREC",
+      "blurb": "Hold the dirt road against the Red Host with archers, longbows, swordsmen and monks.",
+      "icon": "sword",
+      "hue": 215
     }
   ]
 }
