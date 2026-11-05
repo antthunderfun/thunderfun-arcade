@@ -1,4 +1,4 @@
-# Builds the Thunderfun Arcade app and publishes it on the repo's Releases page.
+# Builds the Thunderfun Arcade app (signed with the KEYSTORE_PASSWORD secret) and publishes it on the Releases page.
 # Runs when the app's code changes (not when only games.json changes), or on demand from the Actions tab.
 name: Build APK
 
