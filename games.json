@@ -32,14 +32,6 @@
       "blurb": "Ride east with Captain Ithren, raise towers and light the nine beacons. The prequel to Arrows of Caelvanor.",
       "icon": "castle",
       "hue": 48
-    },
-    {
-      "id": "five-taps",
-      "name": "Five Taps",
-      "url": "https://claude.ai/artifact/N8QC9AWVFomN7GeAucbhJY",
-      "blurb": "Test game: tap the button five times to win.",
-      "icon": "star",
-      "hue": 285
     }
   ]
 }
