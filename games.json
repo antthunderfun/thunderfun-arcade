@@ -48,6 +48,14 @@
       "blurb": "Match runes as Wren the Hearthfolk wizard and follow the beacon road east to break the Cinder Heart.",
       "icon": "star",
       "hue": 285
+    },
+    {
+      "id": "seeds-of-caelvanor",
+      "name": "Seeds of Caelvanor",
+      "url": "https://claude.ai/artifact/XvDDb38R6NUhFk8twyJMJ5",
+      "blurb": "Mind the Bramblefold garden as Sam Tumbleroot, grow and sell crops, and pack crates for Wren on the road east.",
+      "icon": "sprout",
+      "hue": 75
     }
   ]
 }
