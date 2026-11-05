@@ -56,6 +56,14 @@
       "blurb": "Mind the Bramblefold garden as Sam Tumbleroot, grow and sell crops, and pack crates for Wren on the road east.",
       "icon": "sprout",
       "hue": 75
+    },
+    {
+      "id": "cauldron-of-caelvanor",
+      "name": "Cauldron of Caelvanor",
+      "url": "https://claude.ai/artifact/DFhN1HoUijixY4jTFtQvzp",
+      "blurb": "Apprenticed to the Grey Pilgrim, Wren drops and merges ingredients in an old iron cauldron to brew remedies along the beacon road.",
+      "icon": "flame",
+      "hue": 265
     }
   ]
 }
