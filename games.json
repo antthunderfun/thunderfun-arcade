@@ -40,6 +40,14 @@
       "blurb": "Hold the dirt road against the Red Host with archers, longbows, swordsmen and monks.",
       "icon": "sword",
       "hue": 215
+    },
+    {
+      "id": "runes-of-caelvanor",
+      "name": "Runes of Caelvanor",
+      "url": "https://claude.ai/artifact/BC2BSD4f7JNHy1mVdamsFn",
+      "blurb": "Match runes as Wren the Hearthfolk wizard and follow the beacon road east to break the Cinder Heart.",
+      "icon": "star",
+      "hue": 285
     }
   ]
 }
