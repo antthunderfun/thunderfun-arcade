@@ -18,12 +18,12 @@
       "hue": 145
     },
     {
-      "id": "ember-drift",
-      "name": "Ember Drift",
-      "url": "https://claude.ai/artifact/Mtj3iyZHXqpntmo7vCDW4v",
-      "blurb": "Drift through the night wood as a lantern spirit, burn the horde and bank embers for permanent upgrades.",
-      "icon": "flame",
-      "hue": 15
+      "id": "survivors-of-caelvanor",
+      "name": "Survivors of Caelvanor",
+      "url": "https://claude.ai/artifact/7zy8nPS4EcRZ2xoWihdPHu",
+      "blurb": "Hold the beacon road until dawn on the Night of Ash. Evolve your weapons, light the beacons, and run with Garrow the werewolf.",
+      "icon": "bolt",
+      "hue": 38
     },
     {
       "id": "beacons-of-caelvanor",
