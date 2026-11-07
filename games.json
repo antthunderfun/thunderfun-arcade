@@ -72,6 +72,14 @@
       "blurb": "Found Greenhold where the black glass turned green. Build farms, forges and walls, raise your Town Hall and fend off Ashen raiders.",
       "icon": "castle",
       "hue": 195
+    },
+    {
+      "id": "too-big-sword",
+      "name": "The Too-Big Sword",
+      "url": "https://claude.ai/artifact/LhvSMAoKEgDnrSEFGqGWfE",
+      "blurb": "Walk east with Pip and his far-too-big sword. Pick skills, beat bosses, and help bring Ithren home.",
+      "icon": "star",
+      "hue": 285
     }
   ]
 }
