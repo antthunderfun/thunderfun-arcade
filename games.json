@@ -96,6 +96,14 @@
       "blurb": "A hundred years on, a stubborn young man keeps an old witch's fire burning, earns her magic, and uncovers who she really is.",
       "icon": "flame",
       "hue": 230
+    },
+    {
+      "id": "moonbound",
+      "name": "Moonbound",
+      "url": "https://claude.ai/artifact/FFfytKFSbr3UNdFZM6Dauj",
+      "blurb": "A Caelvanor romance. A bookish young wizard, a grumpy old werewolf, one hut and one bed. Choices, puzzles and more than one ending.",
+      "icon": "star",
+      "hue": 330
     }
   ]
 }
