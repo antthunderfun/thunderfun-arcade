@@ -80,6 +80,14 @@
       "blurb": "Walk east with Pip and his far-too-big sword. Pick skills, beat bosses, and help bring Ithren home.",
       "icon": "star",
       "hue": 285
+    },
+    {
+      "id": "whispers-of-caelvanor",
+      "name": "Whispers of Caelvanor",
+      "url": "https://claude.ai/artifact/Nccbn8Btu5ofY3dM9u5z1j",
+      "blurb": "A hundred years on, a stubborn young man keeps an old witch's fire burning, earns her magic, and uncovers who she really is.",
+      "icon": "flame",
+      "hue": 230
     }
   ]
 }
