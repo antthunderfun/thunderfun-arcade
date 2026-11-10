@@ -104,6 +104,14 @@
       "blurb": "A Caelvanor romance. A bookish young wizard, a grumpy old werewolf, one hut and one bed. Choices, puzzles and more than one ending.",
       "icon": "star",
       "hue": 330
+    },
+    {
+      "id": "hatchlings-of-caelvanor",
+      "name": "Hatchlings of Caelvanor",
+      "url": "https://claude.ai/artifact/RNZbyJgikN7MnHLsUehRWt",
+      "blurb": "Keep the Highfold dragon sanctuary for Wren. Win rune trials for eggs, hatch and raise all 22 dragons, and wake the Prismwyrm.",
+      "icon": "flame",
+      "hue": 330
     }
   ]
 }
