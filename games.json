@@ -112,6 +112,14 @@
       "blurb": "Build a floating dragon isle, merge eggs into rarer ones, and send your hatchlings out to gather. Play realm minigames for more eggs.",
       "icon": "flame",
       "hue": 330
+    },
+    {
+      "id": "varkhuls-evil-empire",
+      "name": "Varkhul's Evil Empire Inc.",
+      "url": "https://claude.ai/artifact/L1YdStAUciCb9kHBUxDKus",
+      "blurb": "Play the villain for once. Dig Varkhul's mines with goblins, orcs and imps, haul ore with trolls, and hire managers with clipboards.",
+      "icon": "flame",
+      "hue": 350
     }
   ]
 }
